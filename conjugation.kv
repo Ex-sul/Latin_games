@@ -1,0 +1,31 @@
+#:kivy 1.0.9
+
+<VerbLabel@Label>:
+    font_size: 70
+    text_size: self.size
+    halign: "center"
+
+
+<ConjugationGame>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 20
+        BoxLayout:
+            orientation: 'horizontal'
+            VerbLabel:
+                text: "laudo, laudare, laudavi, laudatum, to praise"
+                valign: "middle"
+            VerbLabel:
+                text: "habeo, habere, habui, habitum, to have"
+                valign: "middle"
+        BoxLayout:
+            orientation: 'horizontal'
+            VerbLabel:
+                text: "laudabat"
+                valign: "top"
+            VerbLabel:
+                text: "habebunt"
+                valign: "top"
+
+
+
