@@ -1,31 +1,62 @@
 import random
 
 verb1 = "laudo, laudāre, laudavi, laudatum, to praise"
+verb1_trans = "praise"
+verb1_trans_3rd = "praises"
+verb1_trans_imperf = "praising"
+
 verb2 = "habeo, habēre, habui, habitum, to have"
+verb2_trans = "have"
+verb2_trans_3rd = "has"
+verb2_trans_imperf = "having"
 
 
-class LatinVerb:
+class LatinRegularVerb:
     def __init__(self, lexical_entry):
         self.lexical_entry = lexical_entry
         self.parsed_entry = self.lexical_entry.split(",", maxsplit=4)
-        self.second_principal_part = self.parsed_entry[1]
+        self.infinitive = self.parsed_entry[1]
         self.conjugation = self.identify_conj()
+        self.pres_stem = self.identify_pres_stem()
 
     def identify_conj(self):
-        if self.second_principal_part[-3] == "ā":
+        if self.infinitive[-3] == "ā":
             return 1
-        elif self.second_principal_part[-3] == "ē":
+        elif self.infinitive[-3] == "ē":
             return 2
-        elif self.second_principal_part[-3] == "e":
+        elif self.infinitive[-3] == "e":
             return 3
-        elif self.second_principal_part[-3] == "ī":
+        elif self.infinitive[-3] == "ī":
             return 4
         else:
             print("Unable to identify conjugation.")
 
-verb1_obj = LatinVerb(verb1)
+    def identify_pres_stem(self):
+        if self.conjugation == 1:
+            return self.infinitive[:-3] + "a"
+        elif self.conjugation == 2:
+            return self.infinitive[:-3] + "e"
+        elif self.conjugation == 3:
+            return self.infinitive[:-3]
+        elif self.conjugation == 4:
+            return self.infinitive[:-3] + "i"
+        else:
+            print("Unable to identify the present stem.")
+
+    def conjugate_pres_tense(self):
+        pres_endings = ["o", "s", "t", "mus", "tis", "nt"]
+        if self.conjugation == 1:
+            return [self.pres_stem[:-1] + "o"] + [self.pres_stem + e for e in pres_endings[1:]]
+
+    def conjugate_fut_tense(self):
+        pass
+
+    def conjugate_imperf_tense(self):
+        pass
+
+verb1_obj = LatinRegularVerb(verb2)
 print(verb1_obj.lexical_entry)
-print("Conjugation:", str(verb1_obj.conjugation))
+print("Present Stem:", verb1_obj.pres_stem)
 
 
 
