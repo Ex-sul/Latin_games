@@ -1,16 +1,14 @@
-import random
-
-verb1_lex = "laudo, laudāre, laudavi, laudatum, to praise"
-verb1_trans = "praise"
-verb1_trans_3rd = "praises"
-verb1_trans_imperf = "praising"
-verb1 = [verb1_lex, verb1_trans, verb1_trans_3rd, verb1_trans_imperf]
-
-verb2_lex = "habeo, habēre, habui, habitum, to have"
-verb2_trans = "have"
-verb2_trans_3rd = "has"
-verb2_trans_imperf = "having"
-verb2 = [verb2_lex, verb2_trans, verb2_trans_3rd, verb2_trans_imperf]
+# verb1_lex = "laudo, laudāre, laudavi, laudatum, to praise"
+# verb1_trans = "praise"
+# verb1_trans_3rd = "praises"
+# verb1_trans_imperf = "praising"
+# verb1 = [verb1_lex, verb1_trans, verb1_trans_3rd, verb1_trans_imperf]
+#
+# verb2_lex = "habeo, habēre, habui, habitum, to have"
+# verb2_trans = "have"
+# verb2_trans_3rd = "has"
+# verb2_trans_imperf = "having"
+# verb2 = [verb2_lex, verb2_trans, verb2_trans_3rd, verb2_trans_imperf]
 
 
 class LatinRegularVerb:
@@ -22,6 +20,8 @@ class LatinRegularVerb:
         # PARSING
         self.lexical_entry = lexical_entry
         self.parsed_entry = self.lexical_entry.split(", ", maxsplit=4)
+        s = ", "
+        self.principal_parts = s.join(self.parsed_entry[:-1])
         self.infinitive = self.parsed_entry[1]
         self.conjugation = self.identify_conj()
         self.pres_stem = self.identify_pres_stem()
@@ -30,6 +30,8 @@ class LatinRegularVerb:
         self.verb_trans_3rd = verb_trans_3rd
         self.verb_trans_imperf = verb_trans_imperf
         # PRESENT SYSTEM
+        self.pres_act_inf = ["infinitive", "", "", self.infinitive, self.parsed_entry[-1]]
+        self.imp_sg = ["imperative", "", "singular", self.pres_stem, self.verb_trans]
         self.pres_tense = self.conjugate_pres_tense()
         self.fut_tense = self.conjugate_fut_tense()
         self.imperf_tense = self.conjugate_imperf_tense()
@@ -94,16 +96,6 @@ class LatinRegularVerb:
             return list(zip(tense, self.person, self.number, conjugated_forms, translations))
 
 
-verb1_obj = LatinRegularVerb(*verb2)
-print(verb1_obj.lexical_entry)
-print("Present Stem:", verb1_obj.pres_stem)
-for x in verb1_obj.imperf_tense:
-    print(x)
-
-
-
-
-# inf1 = "laudare"
-# print(inf1[-2] + inf1[-1] == "re")
-
-# print(verb1.split(",", maxsplit=4))
+# word1 = LatinRegularVerb(*verb2)
+# for x in word1.pres_tense:
+#     print(x)

@@ -1,7 +1,6 @@
 #:kivy 1.0.9
 
 <VerbLabel@Label>:
-    font_size: 70
     text_size: self.size
     halign: "center"
 
@@ -12,19 +11,35 @@
         padding: 20
         BoxLayout:
             orientation: 'horizontal'
-            VerbLabel:
-                text: "laudo, laudare, laudavi, laudatum, to praise"
-                valign: "middle"
-            VerbLabel:
-                text: "habeo, habere, habui, habitum, to have"
-                valign: "middle"
+            BoxLayout:
+                orientation: 'vertical'
+                VerbLabel:
+                    font_size: 40
+                    text: root.word1.principal_parts
+                    valign: "bottom"
+                VerbLabel:
+                    font_size: 50
+                    text: root.word1.parsed_entry[-1]
+                    valign: "top"
+            BoxLayout:
+                orientation: 'vertical'
+                VerbLabel:
+                    font_size: 40
+                    text: root.word2.principal_parts
+                    valign: "bottom"
+                VerbLabel:
+                    font_size: 50
+                    text: root.word2.parsed_entry[-1]
+                    valign: "top"
         BoxLayout:
             orientation: 'horizontal'
             VerbLabel:
-                text: "laudabat"
+                font_size: 70
+                text: "hi"
                 valign: "top"
             VerbLabel:
-                text: "habebunt"
+                font_size: 70
+                text: "hi"
                 valign: "top"
 
 
