@@ -30,8 +30,9 @@ class LatinRegularVerb:
         self.verb_trans_3rd = verb_trans_3rd
         self.verb_trans_imperf = verb_trans_imperf
         # PRESENT SYSTEM
-        self.pres_act_inf = ["infinitive", "", "", self.infinitive, self.parsed_entry[-1]]
-        self.imp_sg = ["imperative", "", "singular", self.pres_stem, self.verb_trans]
+        self.pres_act_inf = ("infinitive", "", "", self.infinitive, self.parsed_entry[-1])
+        self.imp_sg = ("imperative", "", "singular", self.pres_stem, self.verb_trans)
+        self.imp_pl = ("imperative", "", "plural", self.pres_stem + "te", self.verb_trans)
         self.pres_tense = self.conjugate_pres_tense()
         self.fut_tense = self.conjugate_fut_tense()
         self.imperf_tense = self.conjugate_imperf_tense()

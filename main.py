@@ -1,8 +1,8 @@
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from latin import LatinRegularVerb
-from kivy.uix.widget import Widget
-
+from kivy.core.window import Window
+from random import shuffle
 
 
 class ConjugationGame(BoxLayout):
@@ -25,16 +25,54 @@ class ConjugationGame(BoxLayout):
     word2 = LatinRegularVerb(*verb2)
 
     # CREATE SHUFFLED LISTS
-    pass
+    shuffled_list1 = []
+    shuffled_list1.append(word1.pres_act_inf)
+    shuffled_list1.append(word1.imp_sg)
+    shuffled_list1.append(word1.imp_pl)
+    shuffled_list1.extend(word1.pres_tense)
+    shuffled_list1.extend(word1.fut_tense)
+    shuffled_list1.extend(word1.imperf_tense)
+    shuffle(shuffled_list1)
 
-    # ON_KEY EVENTS
-    pass
+    shuffled_list2 = []
+    shuffled_list2.append(word2.pres_act_inf)
+    shuffled_list2.append(word2.imp_sg)
+    shuffled_list2.append(word2.imp_pl)
+    shuffled_list2.extend(word2.pres_tense)
+    shuffled_list2.extend(word2.fut_tense)
+    shuffled_list2.extend(word2.imperf_tense)
+    shuffle(shuffled_list2)
+
 
 
 
 class ConjugationApp(App):
     def build(self):
+        Window.bind(on_key_down=self.key_down)
+        Window.bind(on_key_up=self.key_up)
         return ConjugationGame()
+
+    def key_down(self, key, scancode=None, *_):
+        if scancode == 281:  # PAGE_DOWN
+            print("PAGE_DOWN down")
+        elif scancode == 280:  #PAGE_UP
+            print("PAGE_UP down")
+        elif scancode == 98:  # B
+            print("B down")
+        else:
+            print("\nKey: {} (scancode {}) down".format(_[1], scancode))
+
+    def key_up(self, key, scancode=None, *_):
+        if scancode == 281:  # PAGE_DOWN
+            print("PAGE_DOWN up")
+        elif scancode == 280:  #PAGE_UP
+            print("PAGE_UP up")
+        elif scancode == 98:  # B
+            print("B up")
+        else:
+            print("\nKey: {} (scancode {}) up".format(_, scancode))
+
+
 
 
 if __name__ == "__main__":
