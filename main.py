@@ -25,23 +25,17 @@ class ConjugationGame(BoxLayout):
     word2 = LatinRegularVerb(*verb2)
 
     # CREATE SHUFFLED LISTS
-    shuffled_list1 = []
-    shuffled_list1.append(word1.pres_act_inf)
-    shuffled_list1.append(word1.imp_sg)
-    shuffled_list1.append(word1.imp_pl)
-    shuffled_list1.extend(word1.pres_tense)
-    shuffled_list1.extend(word1.fut_tense)
-    shuffled_list1.extend(word1.imperf_tense)
-    shuffle(shuffled_list1)
+    def shuffle_list(self, word_obj):
+        shuffled_list = [word_obj.pres_act_inf, word_obj.imp_sg, word_obj.imp_pl]
+        shuffled_list.extend(word_obj.pres_tense)
+        shuffled_list.extend(word_obj.fut_tense)
+        shuffled_list.extend(word_obj.imperf_tense)
+        return shuffle(shuffled_list)
 
-    shuffled_list2 = []
-    shuffled_list2.append(word2.pres_act_inf)
-    shuffled_list2.append(word2.imp_sg)
-    shuffled_list2.append(word2.imp_pl)
-    shuffled_list2.extend(word2.pres_tense)
-    shuffled_list2.extend(word2.fut_tense)
-    shuffled_list2.extend(word2.imperf_tense)
-    shuffle(shuffled_list2)
+    word1_list = shuffle_list(word1)
+    word2_list = shuffle_list(word2)
+
+
 
 
 
