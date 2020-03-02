@@ -2,8 +2,11 @@ from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from latin import LatinRegularVerb
 from kivy.core.window import Window
+from kivy.properties import NumericProperty
 from random import shuffle
 
+
+some_random_number = 0
 
 def shuffle_list(word_obj):
     shuffled_list = [word_obj.pres_act_inf, word_obj.imp_sg, word_obj.imp_pl]
@@ -16,7 +19,7 @@ def shuffle_list(word_obj):
 
 class ConjugationGame(BoxLayout):
     round = 1
-    game_state = 0
+    game_state = 1
 
     # FIRST VERB
     verb1_lex = "laudo, laudāre, laudavi, laudatum, to praise"
@@ -43,8 +46,31 @@ class ConjugationGame(BoxLayout):
     word1_selected = word1_shuffled_list.pop()
     word2_selected = word2_shuffled_list.pop()
 
-    word1_showing = word1_selected[-2]
-    word2_showing = word2_selected[-2]
+    if game_state == 0:
+        word1_showing = ""
+        word2_showing = ""
+    elif game_state == 1:
+        word1_showing = word1_selected[-2]
+        word2_showing = ""
+    elif game_state == 2:
+        word1_showing = word1_selected[-2] + "\n" + word1_selected[-1]
+        word2_showing = ""
+    elif game_state == 3:
+        word1_showing = ""
+        word2_showing = word2_selected[-2]
+    elif game_state == 4:
+        word1_showing = ""
+        word2_showing = word2_selected[-2] + "\n" + word2_selected[-1]
+
+    def change_game_state(self):
+        if self.game_state > 4:
+            self.game_state = 1
+        else:
+            self.game_state += 1
+        print(self.game_state)
+
+    def print_test(self):
+        print("I have spoken.")
 
 
 class ConjugationApp(App):
@@ -56,6 +82,7 @@ class ConjugationApp(App):
     def key_down(self, key, scancode=None, *_):
         if scancode == 281:  # PAGE_DOWN
             print("PAGE_DOWN pressed")
+            ConjugationGame.change_game_state(self.root)
         elif scancode == 280:  # PAGE_UP
             print("PAGE_UP pressed")
         elif scancode == 98:  # B
