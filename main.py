@@ -2,11 +2,9 @@ from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from latin import LatinRegularVerb
 from kivy.core.window import Window
-from kivy.properties import NumericProperty
+from kivy.properties import StringProperty, NumericProperty
 from random import shuffle
 
-
-some_random_number = 0
 
 def shuffle_list(word_obj):
     shuffled_list = [word_obj.pres_act_inf, word_obj.imp_sg, word_obj.imp_pl]
@@ -18,8 +16,10 @@ def shuffle_list(word_obj):
 
 
 class ConjugationGame(BoxLayout):
-    round = 1
-    game_state = 1
+    round = NumericProperty(1)
+    game_state = NumericProperty(0)
+    word1_showing = StringProperty("")
+    word2_showing = StringProperty("")
 
     # FIRST VERB
     verb1_lex = "laudo, laudāre, laudavi, laudatum, to praise"
@@ -46,31 +46,31 @@ class ConjugationGame(BoxLayout):
     word1_selected = word1_shuffled_list.pop()
     word2_selected = word2_shuffled_list.pop()
 
-    if game_state == 0:
-        word1_showing = ""
-        word2_showing = ""
-    elif game_state == 1:
-        word1_showing = word1_selected[-2]
-        word2_showing = ""
-    elif game_state == 2:
-        word1_showing = word1_selected[-2] + "\n" + word1_selected[-1]
-        word2_showing = ""
-    elif game_state == 3:
-        word1_showing = ""
-        word2_showing = word2_selected[-2]
-    elif game_state == 4:
-        word1_showing = ""
-        word2_showing = word2_selected[-2] + "\n" + word2_selected[-1]
-
     def change_game_state(self):
-        if self.game_state > 4:
+        # CHANGE GAME STATE
+        if self.game_state > 3:
             self.game_state = 1
         else:
             self.game_state += 1
+        # Decide Which Word to Show
+        if self.game_state == 0:
+            self.word1_showing = ""
+            self.word2_showing = ""
+        elif self.game_state == 1:
+            self.word1_showing = self.word1_selected[-2]
+            self.word2_showing = ""
+        elif self.game_state == 2:
+            self.word1_showing = self.word1_selected[-2] + "\n" + self.word1_selected[-1]
+            self.word2_showing = ""
+        elif self.game_state == 3:
+            self.word1_showing = ""
+            self.word2_showing = self.word2_selected[-2]
+        elif self.game_state == 4:
+            self.word1_showing = ""
+            self.word2_showing = self.word2_selected[-2] + "\n" + self.word2_selected[-1]
         print(self.game_state)
-
-    def print_test(self):
-        print("I have spoken.")
+        print(self.word1_showing)
+        print(self.word2_showing)
 
 
 class ConjugationApp(App):
