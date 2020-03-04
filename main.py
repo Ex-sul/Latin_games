@@ -48,11 +48,25 @@ class ConjugationGame(BoxLayout):
 
     def change_game_state(self):
         # CHANGE GAME STATE
-        if self.game_state > 3:
+        if self.game_state > 3:  # at end, pop next item
             self.game_state = 1
-        else:
+            # CHECK LIST 1, REFRESH IF NECESSARY
+            if len(self.word1_shuffled_list) > 0:
+                self.word1_selected = self.word1_shuffled_list.pop()
+            else:
+                self.word1_shuffled_list = shuffle_list(self.word1)
+                self.word1_selected = self.word1_shuffled_list.pop()
+            # CHECK LIST 2, REFRESH IF NECESSARY
+            if len(self.word2_shuffled_list) > 0:
+                self.word2_selected = self.word2_shuffled_list.pop()
+            else:
+                self.word2_shuffled_list = shuffle_list(self.word2)
+                self.word2_selected = self.word2_shuffled_list.pop()
+
+        else:  # advance game state
             self.game_state += 1
-        # Decide Which Word to Show
+
+        # DECIDE WHICH WORD TO SHOW
         if self.game_state == 0:
             self.word1_showing = ""
             self.word2_showing = ""
@@ -68,9 +82,7 @@ class ConjugationGame(BoxLayout):
         elif self.game_state == 4:
             self.word1_showing = ""
             self.word2_showing = self.word2_selected[-2] + "\n" + self.word2_selected[-1]
-        print(self.game_state)
-        print(self.word1_showing)
-        print(self.word2_showing)
+
 
 
 class ConjugationApp(App):
