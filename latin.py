@@ -1,14 +1,3 @@
-# verb1_lex = "laudo, laudāre, laudavi, laudatum, to praise"
-# verb1_trans = "praise"
-# verb1_trans_3rd = "praises"
-# verb1_trans_imperf = "praising"
-# verb1 = [verb1_lex, verb1_trans, verb1_trans_3rd, verb1_trans_imperf]
-#
-# verb2_lex = "habeo, habēre, habui, habitum, to have"
-# verb2_trans = "have"
-# verb2_trans_3rd = "has"
-# verb2_trans_imperf = "having"
-# verb2 = [verb2_lex, verb2_trans, verb2_trans_3rd, verb2_trans_imperf]
 
 
 class LatinRegularVerb:
