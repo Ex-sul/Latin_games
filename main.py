@@ -26,10 +26,16 @@ class ConjugationGame(BoxLayout):
     answer2 = StringProperty("")
 
     # FIRST VERB
-    verb1_lex = "laudo, laudāre, laudavi, laudatum, to praise"
-    verb1_trans = "praise"
-    verb1_trans_3rd = "praises"
-    verb1_trans_imperf = "praising"
+    # verb1_lex = "laudo, laudāre, laudavi, laudatum, to praise"
+    # verb1_trans = "praise"
+    # verb1_trans_3rd = "praises"
+    # verb1_trans_imperf = "praising"
+    # verb1 = [verb1_lex, verb1_trans, verb1_trans_3rd, verb1_trans_imperf]
+
+    verb1_lex = "amo, amāre, amavi, amatum, to love"
+    verb1_trans = "love"
+    verb1_trans_3rd = "loves"
+    verb1_trans_imperf = "loving"
     verb1 = [verb1_lex, verb1_trans, verb1_trans_3rd, verb1_trans_imperf]
 
     # SECOND VERB
@@ -102,14 +108,14 @@ class ConjugationGame(BoxLayout):
             self.word1_showing = self.stem1
             self.word2_showing = ""
         elif self.game_state == 2:
-            self.word1_showing = self.stem1 + "\n" + self.answer1
+            self.word1_showing = "{}\n[size=50]{}[/size]".format(self.stem1, self.answer1)
             self.word2_showing = ""
         elif self.game_state == 3:
             self.word1_showing = ""
             self.word2_showing = self.stem2
         elif self.game_state == 4:
             self.word1_showing = ""
-            self.word2_showing = self.stem2 + "\n" + self.answer2
+            self.word2_showing = "{}\n[size=50]{}[/size]".format(self.stem2, self.answer2)
 
 
 class ConjugationApp(App):
