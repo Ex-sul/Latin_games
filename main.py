@@ -26,17 +26,12 @@ class ConjugationGame(BoxLayout):
     answer2 = StringProperty("")
 
     # FIRST VERB
-    # verb1_lex = "laudo, laudāre, laudavi, laudatum, to praise"
-    # verb1_trans = "praise"
-    # verb1_trans_3rd = "praises"
-    # verb1_trans_imperf = "praising"
-    # verb1 = [verb1_lex, verb1_trans, verb1_trans_3rd, verb1_trans_imperf]
-
-    verb1_lex = "amo, amāre, amavi, amatum, to love"
-    verb1_trans = "love"
-    verb1_trans_3rd = "loves"
-    verb1_trans_imperf = "loving"
+    verb1_lex = "laudo, laudāre, laudavi, laudatum, to praise"
+    verb1_trans = "praise"
+    verb1_trans_3rd = "praises"
+    verb1_trans_imperf = "praising"
     verb1 = [verb1_lex, verb1_trans, verb1_trans_3rd, verb1_trans_imperf]
+
 
     # SECOND VERB
     verb2_lex = "habeo, habēre, habui, habitum, to have"
@@ -64,8 +59,7 @@ class ConjugationGame(BoxLayout):
             self.round += 1
 
     def change_game_state(self):
-        # CHANGE GAME STATE
-        if self.game_state > 3:  # at end, pop next item
+        if self.game_state > 3:
             self.game_state = 1
             # CHECK LIST 1, REFRESH IF NECESSARY
             if len(self.word1_shuffled_list) > 0:
@@ -83,39 +77,90 @@ class ConjugationGame(BoxLayout):
             self.game_state += 1
 
         # DECIDE WHICH ASPECT TO SHOW
-        if self.round == 1:  # TRANSLATION
+
+        #  Round 1: Translation
+        if self.round == 1:
             self.stem1 = self.word1_selected[-2]
             self.stem2 = self.word2_selected[-2]
             self.answer1 = self.word1_selected[-1]
             self.answer2 = self.word2_selected[-1]
-        elif self.round == 2:  # PARSING
+
+        # Round 2: Parsing
+        elif self.round == 2:
             self.stem1 = self.word1_selected[-2]
             self.stem2 = self.word2_selected[-2]
-            self.answer1 = self.word1_selected[0] + "\n" + \
-                           self.word1_selected[1] + " person \n" + \
-                           self.word1_selected[2]
-            self.answer2 = self.word2_selected[0] + "\n" + \
-                           self.word2_selected[1] + " person \n" + \
-                           self.word2_selected[2]
+            # REMOVE "PERSON" FROM ANSWER1 IF INFINITIVE OR IMPERATIVE
+            if self.word1_selected[0] != "infinitive" and self.word1_selected[0] != "imperative":
+                self.answer1 = self.word1_selected[0] + "\n" + \
+                               self.word1_selected[1] + " person \n" + \
+                               self.word1_selected[2]
+            else:  # is infinitive or imperative
+                self.answer1 = self.word1_selected[0] + "\n" + \
+                               self.word1_selected[2]
+            # REMOVE "PERSON" FROM ANSWER2 IF INFINITIVE OR IMPERATIVE
+            if self.word2_selected[0] != "infinitive" and self.word2_selected[0] != "imperative":
+                self.answer2 = self.word2_selected[0] + "\n" + \
+                               self.word2_selected[1] + " person \n" + \
+                               self.word2_selected[2]
+            else:  # is infinitive or imperative
+                self.answer2 = self.word2_selected[0] + "\n" + \
+                               self.word2_selected[2]
+
+
+        # Round 3: Parsing
         else:  # self.round == 3: CONJUGATION
-            pass
+            # REMOVE "PERSON" FROM ANSWER1 IF INFINITIVE OR IMPERATIVE
+            if self.word1_selected[0] != "infinitive" and self.word1_selected[0] != "imperative":
+                self.stem1 = self.word1_selected[0] + "\n" + \
+                               self.word1_selected[1] + " person \n" + \
+                               self.word1_selected[2]
+            else:  # is infinitive or imperative
+                self.stem1 = self.word1_selected[0] + "\n" + \
+                               self.word1_selected[2]
+            # REMOVE "PERSON" FROM ANSWER2 IF INFINITIVE OR IMPERATIVE
+            if self.word2_selected[0] != "infinitive" and self.word2_selected[0] != "imperative":
+                self.stem2 = self.word2_selected[0] + "\n" + \
+                               self.word2_selected[1] + " person \n" + \
+                               self.word2_selected[2]
+            else:  # is infinitive or imperative
+                self.stem2 = self.word2_selected[0] + "\n" + \
+                               self.word2_selected[2]
+            self.answer1 = self.word1_selected[-2]
+            self.answer2 = self.word2_selected[-2]
 
         # DECIDE WHICH WORD TO SHOW
-        if self.game_state == 0:
-            self.word1_showing = ""
-            self.word2_showing = ""
-        elif self.game_state == 1:
-            self.word1_showing = self.stem1
-            self.word2_showing = ""
-        elif self.game_state == 2:
-            self.word1_showing = "{}\n[size=50]{}[/size]".format(self.stem1, self.answer1)
-            self.word2_showing = ""
-        elif self.game_state == 3:
-            self.word1_showing = ""
-            self.word2_showing = self.stem2
-        elif self.game_state == 4:
-            self.word1_showing = ""
-            self.word2_showing = "{}\n[size=50]{}[/size]".format(self.stem2, self.answer2)
+        if self.round != 3:
+            if self.game_state == 0:
+                self.word1_showing = ""
+                self.word2_showing = ""
+            elif self.game_state == 1:
+                self.word1_showing = self.stem1
+                self.word2_showing = ""
+            elif self.game_state == 2:
+                self.word1_showing = "{}\n[size=50]{}[/size]".format(self.stem1, self.answer1)
+                self.word2_showing = ""
+            elif self.game_state == 3:
+                self.word1_showing = ""
+                self.word2_showing = self.stem2
+            elif self.game_state == 4:
+                self.word1_showing = ""
+                self.word2_showing = "{}\n[size=50]{}[/size]".format(self.stem2, self.answer2)
+        else:  # round 4
+            if self.game_state == 0:
+                self.word1_showing = ""
+                self.word2_showing = ""
+            elif self.game_state == 1:
+                self.word1_showing = "[size=50]{}[/size]\n".format(self.stem1)
+                self.word2_showing = ""
+            elif self.game_state == 2:
+                self.word1_showing = "[size=50]{}[/size]\n{}".format(self.stem1, self.answer1)
+                self.word2_showing = ""
+            elif self.game_state == 3:
+                self.word1_showing = ""
+                self.word2_showing = "[size=50]{}[/size]\n".format(self.stem2)
+            elif self.game_state == 4:
+                self.word1_showing = ""
+                self.word2_showing = "[size=50]{}[/size]\n{}".format(self.stem2, self.answer2)
 
 
 class ConjugationApp(App):
