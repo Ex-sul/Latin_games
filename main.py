@@ -1,13 +1,16 @@
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
-from latin import LatinRegularVerb
+from latin import LatinRegularVerb, SumLatinIrregularVerb, PossumLatinIrregularVerb
 from kivy.core.window import Window
 from kivy.properties import StringProperty, NumericProperty
 from random import shuffle
 
 
 def shuffle_list(word_obj):
-    shuffled_list = [word_obj.pres_act_inf, word_obj.imp_sg, word_obj.imp_pl]
+    try:
+        shuffled_list = [word_obj.pres_act_inf, word_obj.imp_sg, word_obj.imp_pl]
+    except:
+        shuffled_list = [word_obj.pres_act_inf]
     shuffled_list.extend(word_obj.pres_tense)
     shuffled_list.extend(word_obj.fut_tense)
     shuffled_list.extend(word_obj.imperf_tense)
@@ -41,8 +44,10 @@ class ConjugationGame(BoxLayout):
     verb2 = [verb2_lex, verb2_trans, verb2_trans_3rd, verb2_trans_imperf]
 
     # CREATE CLASS OBJECTS
-    word1 = LatinRegularVerb(*verb1)
-    word2 = LatinRegularVerb(*verb2)
+    # word1 = LatinRegularVerb(*verb1)
+    # word2 = LatinRegularVerb(*verb2)
+    word1 = SumLatinIrregularVerb()
+    word2 = PossumLatinIrregularVerb()
 
     word1_shuffled_list = shuffle_list(word1)
     word2_shuffled_list = shuffle_list(word2)
