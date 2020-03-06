@@ -234,6 +234,7 @@ class ConjugationApp(App):
     def build(self):
         Window.bind(on_key_down=self.key_down)
         # Window.bind(on_key_up=self.key_up)
+        Window.fullscreen = 'auto'
         return ConjugationGame()
 
     def key_down(self, key, scancode=None, *_):
