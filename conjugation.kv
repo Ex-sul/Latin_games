@@ -11,26 +11,15 @@
         padding: 20
         BoxLayout:
             orientation: 'horizontal'
-            BoxLayout:
-                orientation: 'vertical'
-                VerbLabel:
-                    font_size: 40
-                    text: root.word1.principal_parts
-                    valign: "bottom"
-                VerbLabel:
-                    font_size: 45
-                    text: root.word1.parsed_entry[-1]
-                    valign: "top"
-            BoxLayout:
-                orientation: 'vertical'
-                VerbLabel:
-                    font_size: 40
-                    text: root.word2.principal_parts
-                    valign: "bottom"
-                VerbLabel:
-                    font_size: 45
-                    text: root.word2.parsed_entry[-1]
-                    valign: "top"
+            VerbLabel:
+                text: "[size=50]{}[/size]\n[size=45]{}[/size]".format(root.word1.principal_parts, root.word1.parsed_entry[-1])
+                valign: "middle"
+            VerbLabel:
+                text: "[size=50]{}[/size]\n[size=45]{}[/size]".format(root.word2.principal_parts, root.word2.parsed_entry[-1])
+                valign: "middle"
+            VerbLabel:
+                text: "[size=50]{}[/size]\n[size=45]{}[/size]".format(root.word3.principal_parts, root.word3.parsed_entry[-1])
+                valign: "middle"
         BoxLayout:
             orientation: 'horizontal'
             VerbLabel:
@@ -40,6 +29,10 @@
             VerbLabel:
                 font_size: 70
                 text: root.word2_showing
+                valign: "top"
+            VerbLabel:
+                font_size: 70
+                text: root.word3_showing
                 valign: "top"
 
 
