@@ -86,6 +86,59 @@ class LatinRegularVerb:
             return list(zip(tense, self.person, self.number, conjugated_forms, translations))
 
 
-# word1 = LatinRegularVerb(*verb2)
-# for x in word1.pres_tense:
-#     print(x)
+class SumLatinIrregularVerb():
+    def __init__(self):
+        self.lexical_entry = "sum, esse, fui, futurum, to be"
+        self.parsed_entry = self.lexical_entry.split(", ", maxsplit=4)
+        s = ", "
+        self.principal_parts = s.join(self.parsed_entry[:-1])
+        self.infinitive = self.parsed_entry[1]
+        # PRESENT SYSTEM
+        self.pres_act_inf = ("infinitive", "", "", self.infinitive, self.parsed_entry[-1])
+        self.pres_tense = (("present", "first", "singular", "sum", "I am"),
+                           ("present", "second", "singular", "es", "you are"),
+                           ("present", "third", "singular", "est", "he is"),
+                           ("present", "first", "plural", "sumus", "we are"),
+                           ("present", "second", "plural", "estis", "you all are"),
+                           ("present", "third", "plural", "sunt", "they are"))
+        self.fut_tense = (("future", "first", "singular", "ero", "I will be"),
+                           ("future", "second", "singular", "eris", "you will be"),
+                           ("future", "third", "singular", "erit", "he will be"),
+                           ("future", "first", "plural", "erimus", "we will be"),
+                           ("future", "second", "plural", "eritis", "you all will be"),
+                           ("future", "third", "plural", "erunt", "they will be"))
+        self.imperf_tense = (("imperfect", "first", "singular", "eram", "I was"),
+                           ("imperfect", "second", "singular", "eras", "you were"),
+                           ("imperfect", "third", "singular", "erat", "he was"),
+                           ("imperfect", "first", "plural", "eramus", "we were"),
+                           ("imperfect", "second", "plural", "eratis", "you all were"),
+                           ("imperfect", "third", "plural", "erant", "they were"))
+
+
+class PossumLatinIrregularVerb:
+    def __init__(self):
+        self.lexical_entry = "possum, posse, potui, to be able"
+        self.parsed_entry = self.lexical_entry.split(", ", maxsplit=3)
+        s = ", "
+        self.principal_parts = s.join(self.parsed_entry[:-1])
+        self.infinitive = self.parsed_entry[1]
+        # PRESENT SYSTEM
+        self.pres_act_inf = ("infinitive", "", "", self.infinitive, self.parsed_entry[-1])
+        self.pres_tense = (("present", "first", "singular", "possum", "I am able"),
+                           ("present", "second", "singular", "potes", "you are able"),
+                           ("present", "third", "singular", "potest", "he is able"),
+                           ("present", "first", "plural", "possumus", "we are able"),
+                           ("present", "second", "plural", "potestis", "you all are able"),
+                           ("present", "third", "plural", "possunt", "they are able"))
+        self.fut_tense = (("future", "first", "singular", "potero", "I will be able"),
+                          ("future", "second", "singular", "poteris", "you will be able"),
+                          ("future", "third", "singular", "poterit", "he will be able"),
+                          ("future", "first", "plural", "poterimus", "we will be able"),
+                          ("future", "second", "plural", "poteritis", "you all will be able"),
+                          ("future", "third", "plural", "poterunt", "they will be able"))
+        self.imperf_tense = (("imperfect", "first", "singular", "poteram", "I was able"),
+                             ("imperfect", "second", "singular", "poteras", "you were able"),
+                             ("imperfect", "third", "singular", "poterat", "he was able"),
+                             ("imperfect", "first", "plural", "poteramus", "we were able"),
+                             ("imperfect", "second", "plural", "poteratis", "you all were able"),
+                             ("imperfect", "third", "plural", "poterant", "they were able"))
