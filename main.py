@@ -98,8 +98,7 @@ class ConjugationGame(BoxLayout):
         else:  # advance game state
             self.game_state += 1
 
-        # DECIDE WHICH ASPECT TO SHOW
-
+        # DECIDE WHICH ASPECT TO SHOW ##################################################################################
         #  Round 1: Translation
         if self.round == 1:
             self.stem1 = self.word1_selected[-2]
@@ -139,7 +138,6 @@ class ConjugationGame(BoxLayout):
                 self.answer3 = self.word3_selected[0] + "\n" + \
                                self.word3_selected[2]
 
-
         # Round 3: Parsing
         else:  # self.round == 3: CONJUGATION
             # REMOVE "PERSON" FROM ANSWER 1 IF INFINITIVE OR IMPERATIVE
@@ -170,7 +168,7 @@ class ConjugationGame(BoxLayout):
             self.answer2 = self.word2_selected[-2]
             self.answer3 = self.word3_selected[-2]
 
-        # DECIDE WHICH WORD TO SHOW
+        # DECIDE WHICH WORD TO SHOW ####################################################################################
         if self.round != 3:
             if self.game_state == 0:
                 self.word1_showing = ""
