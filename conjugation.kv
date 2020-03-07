@@ -2,38 +2,50 @@
 
 <VerbLabel@Label>:
     text_size: self.size
+    color: [1, 1, 0.823, 1]
     halign: "center"
     markup: True
 
 <ConjugationGame>:
-    BoxLayout:
-        orientation: 'vertical'
-        padding: 20
+    FloatLayout:
         BoxLayout:
-            orientation: 'horizontal'
-            VerbLabel:
-                text: "[size=50]{}[/size]\n[size=45]{}[/size]".format(root.word1.principal_parts, root.word1.parsed_entry[-1])
-                valign: "middle"
-            VerbLabel:
-                text: "[size=50]{}[/size]\n[size=45]{}[/size]".format(root.word2.principal_parts, root.word2.parsed_entry[-1])
-                valign: "middle"
-            VerbLabel:
-                text: "[size=50]{}[/size]\n[size=45]{}[/size]".format(root.word3.principal_parts, root.word3.parsed_entry[-1])
-                valign: "middle"
-        BoxLayout:
-            orientation: 'horizontal'
-            VerbLabel:
-                font_size: 70
-                text: root.word1_showing
-                valign: "top"
-            VerbLabel:
-                font_size: 70
-                text: root.word2_showing
-                valign: "top"
-            VerbLabel:
-                font_size: 70
-                text: root.word3_showing
-                valign: "top"
+            orientation: 'vertical'
+            padding: 20
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint_y: 0.75
+                VerbLabel:
+                    text: "[size=50]{}[/size]\n[size=45]{}[/size]".format(root.word1.principal_parts, root.word1.parsed_entry[-1])
+                    valign: "middle"
+                VerbLabel:
+                    text: "[size=50]{}[/size]\n[size=45]{}[/size]".format(root.word2.principal_parts, root.word2.parsed_entry[-1])
+                    valign: "middle"
+                VerbLabel:
+                    text: "[size=50]{}[/size]\n[size=45]{}[/size]".format(root.word3.principal_parts, root.word3.parsed_entry[-1])
+                    valign: "middle"
+            BoxLayout:
+                orientation: 'horizontal'
+                VerbLabel:
+                    font_size: 70
+                    text: root.word1_showing
+                    valign: "top"
+                    color: [0.69, 0.878, 0.901, 1]
+                VerbLabel:
+                    font_size: 70
+                    text: root.word2_showing
+                    valign: "top"
+                    color: [0.69, 0.878, 0.901, 1]
+                VerbLabel:
+                    font_size: 70
+                    text: root.word3_showing
+                    valign: "top"
+                    color: [0.69, 0.878, 0.901, 1]
+        Label:
+            text: "Round {}\n{}".format(root.round, root.round_name)
+            color: [1, 1, 0.823, 1]
+            font_size: 30
+            pos_hint: {'center_y': 0.95}
+            halign: "center"
 
 
 

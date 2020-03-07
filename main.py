@@ -1,5 +1,6 @@
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.floatlayout import FloatLayout
 from latin import LatinRegularVerb, SumLatinIrregularVerb, PossumLatinIrregularVerb
 from kivy.core.window import Window
 from kivy.properties import StringProperty, NumericProperty
@@ -18,8 +19,9 @@ def shuffle_list(word_obj):
     return shuffled_list
 
 
-class ConjugationGame(BoxLayout):
+class ConjugationGame(BoxLayout, FloatLayout):
     round = NumericProperty(1)
+    round_name = StringProperty("Translation")
     game_state = NumericProperty(0)
     word1_showing = StringProperty("")
     word2_showing = StringProperty("")
@@ -69,10 +71,17 @@ class ConjugationGame(BoxLayout):
 
     def change_round(self):
         # CHANGE ROUND
-        if self.round > 3:
+        if self.round > 2:
             self.round = 1
         else:
             self.round += 1
+        # CHANGE ROUND NAME
+        if self.round == 1:
+            self.round_name = "Translation"
+        elif self.round == 2:
+            self.round_name = "Parsing"
+        else:
+            self.round_name = "Conjugation"
 
     def change_game_state(self):
         if self.game_state > 5:
