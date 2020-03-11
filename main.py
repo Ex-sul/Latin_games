@@ -4,6 +4,7 @@ from kivy.uix.floatlayout import FloatLayout
 from latin import LatinRegularVerb, SumLatinIrregularVerb, PossumLatinIrregularVerb
 from kivy.core.window import Window
 from kivy.properties import StringProperty, NumericProperty
+from latin_settings import settings_json
 from random import shuffle
 
 
@@ -34,16 +35,10 @@ class ConjugationGame(BoxLayout, FloatLayout):
     answer3 = StringProperty("")
 
     # FIRST VERB
-    # verb1_lex = "laudo, laudāre, laudavi, laudatum, to praise"
-    # verb1_trans = "praise"
-    # verb1_trans_3rd = "praises"
-    # verb1_trans_imperf = "praising"
-    # verb1 = [verb1_lex, verb1_trans, verb1_trans_3rd, verb1_trans_imperf]
-
-    verb1_lex = "servo, servāre, servavi, servatum, to save"
-    verb1_trans = "save"
-    verb1_trans_3rd = "saves"
-    verb1_trans_imperf = "saving"
+    verb1_lex = "laudo, laudāre, laudavi, laudatum, to praise"
+    verb1_trans = "praise"
+    verb1_trans_3rd = "praises"
+    verb1_trans_imperf = "praising"
     verb1 = [verb1_lex, verb1_trans, verb1_trans_3rd, verb1_trans_imperf]
 
 
@@ -83,6 +78,11 @@ class ConjugationGame(BoxLayout, FloatLayout):
         else:
             self.round_name = "Conjugation"
 
+    def revert_game_state(self):
+        if self.game_state >= 1:
+            self.game_state -= 1
+        self.show_words()
+
     def change_game_state(self):
         if self.game_state > 5:
             self.game_state = 1
@@ -106,8 +106,9 @@ class ConjugationGame(BoxLayout, FloatLayout):
                 self.word3_selected = self.word3_shuffled_list.pop()
         else:  # advance game state
             self.game_state += 1
+        self.show_words()
 
-        # DECIDE WHICH ASPECT TO SHOW ##################################################################################
+    def show_words(self):
         #  Round 1: Translation
         if self.round == 1:
             self.stem1 = self.word1_selected[-2]
@@ -241,6 +242,7 @@ class ConjugationGame(BoxLayout, FloatLayout):
 
 class ConjugationApp(App):
     def build(self):
+        self.use_kivy_settings = False
         Window.bind(on_key_down=self.key_down)
         # Window.bind(on_key_up=self.key_up)
         Window.fullscreen = 'auto'
@@ -252,9 +254,12 @@ class ConjugationApp(App):
             ConjugationGame.change_game_state(self.root)
         elif scancode == 280:  # PAGE_UP
             print("PAGE_UP pressed")
+            ConjugationGame.revert_game_state(self.root)
         elif scancode == 98:  # B
             print("B pressed")
             ConjugationGame.change_round(self.root)
+        elif scancode == 115:  # S
+            App.open_settings(self)
         else:
             print("\nKey: {} (scancode {}) pressed".format(_[1], scancode))
 
@@ -267,6 +272,18 @@ class ConjugationApp(App):
     #         print("B released")
     #     else:
     #         print("\nKey: {} (scancode {}) released".format(_, scancode))
+
+    def build_config(self, config):
+        config.setdefaults('General Settings', {
+            'Number of Words to Display': "Two",
+            'firstword': 'laudo, laudāre, laudavi, laudatum, to praise'
+        })
+
+    def build_settings(self, settings):
+        settings.add_json_panel('General Settings',
+                                self.config,
+                                data=settings_json)
+
 
 
 if __name__ == "__main__":
