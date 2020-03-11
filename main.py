@@ -275,15 +275,17 @@ class ConjugationApp(App):
 
     def build_config(self, config):
         config.setdefaults('General Settings', {
+            'Game Mode': 'Present System',
             'Number of Words to Display': "Two",
-            'firstword': 'laudo, laudāre, laudavi, laudatum, to praise'
+            'firstword': 'laudo, laudāre, laudavi, laudatum, to praise',
+            'secondword': 'habeo, habēre, habui, habitum, to have',
+            'thirdword': 'disco, discere, didici, to learn'
         })
 
     def build_settings(self, settings):
         settings.add_json_panel('General Settings',
                                 self.config,
                                 data=settings_json)
-
 
 
 if __name__ == "__main__":
