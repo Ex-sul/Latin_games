@@ -7,6 +7,11 @@ from kivy.properties import StringProperty, NumericProperty
 from latin_settings import settings_json
 from random import shuffle
 
+# you can set the environmental variables for your current running app
+# import os
+# os.environ['VARIABLE'] = 'value'
+# just put that at the top of your imports
+
 
 def shuffle_list(word_obj):
     try:
@@ -245,7 +250,7 @@ class ConjugationApp(App):
         self.use_kivy_settings = False
         Window.bind(on_key_down=self.key_down)
         # Window.bind(on_key_up=self.key_up)
-        Window.fullscreen = 'auto'
+        # Window.fullscreen = 'auto'
         return ConjugationGame()
 
     def key_down(self, key, scancode=None, *_):
@@ -277,8 +282,8 @@ class ConjugationApp(App):
         config.setdefaults('General Settings', {
             'Game Mode': 'Present System',
             'Number of Words to Display': "Two",
-            'firstword': 'laudo, laudāre, laudavi, laudatum, to praise',
-            'secondword': 'habeo, habēre, habui, habitum, to have',
+            'firstword': 'laudo, laudāre, laudavi, laudatum, to praise'.encode("utf-8"),
+            'secondword': 'habeo, habēre, habui, habitum, to have'.encode("utf-8"),
             'thirdword': 'disco, discere, didici, to learn'
         })
 
@@ -286,6 +291,9 @@ class ConjugationApp(App):
         settings.add_json_panel('General Settings',
                                 self.config,
                                 data=settings_json)
+
+    def on_config_change(self, config, section, key, value):
+        print("config: {}\nsection: {}\nkey: {}\nvalue: {}\n".format(config, section, key, value))
 
 
 if __name__ == "__main__":
