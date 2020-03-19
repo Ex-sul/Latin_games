@@ -7,10 +7,11 @@ from kivy.properties import StringProperty, NumericProperty
 from latin_settings import settings_json
 from random import shuffle
 
-# you can set the environmental variables for your current running app
-# import os
-# os.environ['VARIABLE'] = 'value'
-# just put that at the top of your imports
+import os
+os.environ['PYTHONUTF8'] = '1'
+os.environ['PYTHONLEGACYWINDOWSSTDIO'] = '1'
+print(os.environ)
+
 
 
 def shuffle_list(word_obj):
@@ -282,8 +283,8 @@ class ConjugationApp(App):
         config.setdefaults('General Settings', {
             'Game Mode': 'Present System',
             'Number of Words to Display': "Two",
-            'firstword': 'laudo, laudāre, laudavi, laudatum, to praise'.encode("utf-8"),
-            'secondword': 'habeo, habēre, habui, habitum, to have'.encode("utf-8"),
+            'firstword': 'laudo, laudāre, laudavi, laudatum, to praise',
+            'secondword': 'habeo, habēre, habui, habitum, to have',
             'thirdword': 'disco, discere, didici, to learn'
         })
 
