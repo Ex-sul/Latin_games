@@ -1,3 +1,7 @@
+# import kivy.app
+# from fixed_config import FixedConfig
+# kivy.app.Config = FixedConfig
+
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
@@ -6,11 +10,6 @@ from kivy.core.window import Window
 from kivy.properties import StringProperty, NumericProperty
 from latin_settings import settings_json
 from random import shuffle
-
-import os
-os.environ['PYTHONUTF8'] = '1'
-os.environ['PYTHONLEGACYWINDOWSSTDIO'] = '1'
-print(os.environ)
 
 
 
@@ -281,8 +280,8 @@ class ConjugationApp(App):
 
     def build_config(self, config):
         config.setdefaults('General Settings', {
-            'Game Mode': 'Present System',
-            'Number of Words to Display': "Two",
+            'gamemode': 'Present System',
+            'wordsdisplay': "Two",
             'firstword': 'laudo, laudāre, laudavi, laudatum, to praise',
             'secondword': 'habeo, habēre, habui, habitum, to have',
             'thirdword': 'disco, discere, didici, to learn'

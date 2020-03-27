@@ -142,3 +142,8 @@ class PossumLatinIrregularVerb:
                              ("imperfect", "first", "plural", "poteramus", "we were able"),
                              ("imperfect", "second", "plural", "poteratis", "you all were able"),
                              ("imperfect", "third", "plural", "poterant", "they were able"))
+
+
+class LatinNoun:
+    def __init__(self, lexical_entry):
+        pass
