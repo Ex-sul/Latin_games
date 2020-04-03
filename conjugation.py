@@ -1,14 +1,10 @@
-# import kivy.app
-# from fixed_config import FixedConfig
-# kivy.app.Config = FixedConfig
-
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 from latin import LatinRegularVerb, SumLatinIrregularVerb, PossumLatinIrregularVerb
 from kivy.core.window import Window
 from kivy.properties import StringProperty, NumericProperty
-from latin_settings import settings_json
+from conjugation_settings import settings_json
 from random import shuffle
 
 
@@ -56,8 +52,8 @@ class ConjugationGame(BoxLayout, FloatLayout):
 
     # CREATE CLASS OBJECTS
     word1 = LatinRegularVerb(*verb1)
-    # word2 = LatinRegularVerb(*verb2)
-    word2 = SumLatinIrregularVerb()
+    word2 = LatinRegularVerb(*verb2)
+    # word2 = SumLatinIrregularVerb()
     word3 = PossumLatinIrregularVerb()
 
     word1_shuffled_list = shuffle_list(word1)
@@ -153,7 +149,7 @@ class ConjugationGame(BoxLayout, FloatLayout):
                 self.answer3 = self.word3_selected[0] + "\n" + \
                                self.word3_selected[2]
 
-        # Round 3: Parsing
+        # Round 3: Conjugation
         else:  # self.round == 3: CONJUGATION
             # REMOVE "PERSON" FROM ANSWER 1 IF INFINITIVE OR IMPERATIVE
             if self.word1_selected[0] != "infinitive" and self.word1_selected[0] != "imperative":
@@ -250,7 +246,7 @@ class ConjugationApp(App):
         self.use_kivy_settings = False
         Window.bind(on_key_down=self.key_down)
         # Window.bind(on_key_up=self.key_up)
-        # Window.fullscreen = 'auto'
+        Window.fullscreen = 'auto'
         return ConjugationGame()
 
     def key_down(self, key, scancode=None, *_):

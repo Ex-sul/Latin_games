@@ -8,10 +8,10 @@ class LatinRegularVerb:
     def __init__(self, lexical_entry, verb_trans, verb_trans_3rd, verb_trans_imperf):
         # PARSING
         self.lexical_entry = lexical_entry
-        self.parsed_entry = self.lexical_entry.split(", ", maxsplit=4)
+        self.split_entry = self.lexical_entry.split(", ", maxsplit=4)
         s = ", "
-        self.principal_parts = s.join(self.parsed_entry[:-1])
-        self.infinitive = self.parsed_entry[1]
+        self.principal_parts = s.join(self.split_entry[:-1])
+        self.infinitive = self.split_entry[1]
         self.conjugation = self.identify_conj()
         self.pres_stem = self.identify_pres_stem()
         # TRANSLATION
@@ -19,7 +19,7 @@ class LatinRegularVerb:
         self.verb_trans_3rd = verb_trans_3rd
         self.verb_trans_imperf = verb_trans_imperf
         # PRESENT SYSTEM
-        self.pres_act_inf = ("infinitive", "", "", self.infinitive, self.parsed_entry[-1])
+        self.pres_act_inf = ("infinitive", "", "", self.infinitive, self.split_entry[-1])
         self.imp_sg = ("imperative", "", "singular", self.pres_stem, self.verb_trans)
         self.imp_pl = ("imperative", "", "plural", self.pres_stem + "te", self.verb_trans)
         self.pres_tense = self.conjugate_pres_tense()
@@ -89,12 +89,12 @@ class LatinRegularVerb:
 class SumLatinIrregularVerb():
     def __init__(self):
         self.lexical_entry = "sum, esse, fui, futurum, to be"
-        self.parsed_entry = self.lexical_entry.split(", ", maxsplit=4)
+        self.split_entry = self.lexical_entry.split(", ", maxsplit=4)
         s = ", "
-        self.principal_parts = s.join(self.parsed_entry[:-1])
-        self.infinitive = self.parsed_entry[1]
+        self.principal_parts = s.join(self.split_entry[:-1])
+        self.infinitive = self.split_entry[1]
         # PRESENT SYSTEM
-        self.pres_act_inf = ("infinitive", "", "", self.infinitive, self.parsed_entry[-1])
+        self.pres_act_inf = ("infinitive", "", "", self.infinitive, self.split_entry[-1])
         self.pres_tense = (("present", "first", "singular", "sum", "I am"),
                            ("present", "second", "singular", "es", "you are"),
                            ("present", "third", "singular", "est", "he is"),
@@ -118,12 +118,12 @@ class SumLatinIrregularVerb():
 class PossumLatinIrregularVerb:
     def __init__(self):
         self.lexical_entry = "possum, posse, potui, to be able"
-        self.parsed_entry = self.lexical_entry.split(", ", maxsplit=3)
+        self.split_entry = self.lexical_entry.split(", ", maxsplit=3)
         s = ", "
-        self.principal_parts = s.join(self.parsed_entry[:-1])
-        self.infinitive = self.parsed_entry[1]
+        self.principal_parts = s.join(self.split_entry[:-1])
+        self.infinitive = self.split_entry[1]
         # PRESENT SYSTEM
-        self.pres_act_inf = ("infinitive", "", "", self.infinitive, self.parsed_entry[-1])
+        self.pres_act_inf = ("infinitive", "", "", self.infinitive, self.split_entry[-1])
         self.pres_tense = (("present", "first", "singular", "possum", "I am able"),
                            ("present", "second", "singular", "potes", "you are able"),
                            ("present", "third", "singular", "potest", "he is able"),
@@ -145,5 +145,72 @@ class PossumLatinIrregularVerb:
 
 
 class LatinNoun:
-    def __init__(self, lexical_entry):
-        pass
+    cases = ["nominative", "genitive", "dative", "accusative", "ablative", "vocative"] * 2
+    number = ["singular"] * 6 + ["plural"] * 6
+    prepositions = ["the ", "of the ", "to/for the ", "the ", "by/with/from the ", "Oh "]
+
+    def __init__(self, lexical_entry, transl_sg, transl_pl):
+        self.split_entry = lexical_entry.split(", ", maxsplit=3)
+        self.gender = self.split_entry[2][0]
+        self.declension = self.identify_declension()
+        self.base = self.identify_base()
+        self.transl_sg = transl_sg
+        self.transl_pl = transl_pl
+        self.declined_list = self.decline_and_translate()
+
+    def identify_declension(self):
+        if self.split_entry[1][-2:] == "ae":
+            return 1
+        elif self.split_entry[1][-2:] == "ei":
+            return 5
+        elif self.split_entry[1][-1] == "i":
+            return 2
+        elif self.split_entry[1][-2:] == "is":
+            return 3
+        elif self.split_entry[1][-2:] == "us":
+            return 4
+        else:
+            print("Unable to identify declension.")
+
+    def identify_base(self):
+        if self.declension != 2:
+            return self.split_entry[1][:-2]
+        else:  # declension == 2
+            return self.split_entry[1][:-1]
+
+    def decline_and_translate(self):
+        if self.declension == 1:
+            declined_forms = [self.base + e for e in ["a", "ae", "ae", "am", "ā", "a",
+                                                      "ae", "ārum", "īs", "ās", "īs", "ae"]]
+        elif self.declension == 2 and self.gender == "m":
+            if self.split_entry[0][-2:] == "us":
+                declined_forms = [self.base + e for e in ["us", "ī", "ō", "um", "ō", "e",
+                                                          "ī", "ōrum", "īs", "ōs", "īs", "ī"]]
+            else:  # nom. sg. is irregular
+                declined_forms = [self.split_entry[0]] + \
+                                 [self.base + e for e in ["ī", "ō", "um", "ō"]] + \
+                                 [self.split_entry[0]] + \
+                                 [self.base + e for e in ["ī", "ōrum", "īs", "ōs", "īs", "ī"]]
+        elif self.declension == 2 and self.gender == "n":
+            declined_forms = [self.base + e for e in ["um", "ī", "ō", "um", "ō", "um",
+                                                      "a", "ōrum", "īs", "a", "īs", "a"]]
+        elif self.declension == 3 and self.gender != "n":  # m./f.
+            declined_forms = [self.split_entry[0]] + \
+                             [self.base + e for e in ["is", "ī", "em", "e"]] + \
+                             [self.split_entry[0]] + \
+                             [self.base + e for e in ["ēs", "um", "ibus", "ēs", "ibus", "ēs"]]
+        elif self.declension == 3:  # n.
+            declined_forms = [self.split_entry[0]] + \
+                             [self.base + e for e in ["is", "ī"]] + \
+                             [self.split_entry[0]] + \
+                             [self.base + "e"] + \
+                             [self.split_entry[0]] + \
+                             [self.base + e for e in ["a", "um", "ibus", "a", "ibus", "a"]]
+        translations = [p + self.transl_sg for p in self.prepositions] +\
+                       [p + self.transl_pl for p in self.prepositions]
+        return list(zip(self.cases, self.number, declined_forms, translations))
+
+
+n1 = LatinNoun(*["tempus, temporis, n., time", "time", "times"])
+for x in n1.declined_list:
+    print(x)

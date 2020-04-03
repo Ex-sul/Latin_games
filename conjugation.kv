@@ -14,13 +14,13 @@
                 orientation: 'horizontal'
                 size_hint_y: 0.75
                 VerbLabel:
-                    text: "[size=50]{}[/size]\n[size=45]{}[/size]".format(root.word1.principal_parts, root.word1.parsed_entry[-1])
+                    text: "[size=50]{}[/size]\n[size=45]{}[/size]".format(root.word1.principal_parts, root.word1.split_entry[-1])
                     valign: "middle"
                 VerbLabel:
-                    text: "[size=50]{}[/size]\n[size=45]{}[/size]".format(root.word2.principal_parts, root.word2.parsed_entry[-1])
+                    text: "[size=50]{}[/size]\n[size=45]{}[/size]".format(root.word2.principal_parts, root.word2.split_entry[-1])
                     valign: "middle"
                 VerbLabel:
-                    text: "[size=50]{}[/size]\n[size=45]{}[/size]".format(root.word3.principal_parts, root.word3.parsed_entry[-1])
+                    text: "[size=50]{}[/size]\n[size=45]{}[/size]".format(root.word3.principal_parts, root.word3.split_entry[-1])
                     valign: "middle"
             BoxLayout:
                 orientation: 'horizontal'
