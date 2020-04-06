@@ -151,6 +151,8 @@ class LatinNoun:
 
     def __init__(self, lexical_entry, transl_sg, transl_pl):
         self.split_entry = lexical_entry.split(", ", maxsplit=3)
+        s = ", "
+        self.principal_parts = s.join(self.split_entry[:-1])
         self.gender = self.split_entry[2][0]
         self.declension = self.identify_declension()
         self.base = self.identify_base()
@@ -208,9 +210,14 @@ class LatinNoun:
                              [self.base + e for e in ["a", "um", "ibus", "a", "ibus", "a"]]
         translations = [p + self.transl_sg for p in self.prepositions] +\
                        [p + self.transl_pl for p in self.prepositions]
+        # print("len cases:", str(len(self.cases)))
+        # print("len number:", str(len(self.number)))
+        # print("len declined_forms:", str(len(declined_forms)))
+        # print("len translations:", str(len(translations)))
         return list(zip(self.cases, self.number, declined_forms, translations))
 
 
-n1 = LatinNoun(*["tempus, temporis, n., time", "time", "times"])
-for x in n1.declined_list:
-    print(x)
+# n1 = LatinNoun(*["tempus, temporis, n., time", "time", "times"])
+# for x in n1.declined_list:
+#     print(x)
+# print(len(n1.declined_list))

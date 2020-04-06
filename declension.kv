@@ -1,0 +1,43 @@
+#:kivy 1.0.9
+
+<NounLabel@Label>:
+    text_size: self.size
+    halign: "center"
+    markup: True
+
+<DeclensionGame>:
+    FloatLayout:
+        BoxLayout:
+            orientation: 'vertical'
+            padding: 20
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint_y: 0.75
+                NounLabel:
+                    text: "[size=50]{}[/size]\n[size=45]{}[/size]".format(root.noun1_obj.principal_parts, root.noun1_obj.split_entry[-1])
+                    valign: "middle"
+                NounLabel:
+                    text: "[size=50]{}[/size]\n[size=45]{}[/size]".format(root.noun2_obj.principal_parts, root.noun2_obj.split_entry[-1])
+                    valign: "middle"
+                NounLabel:
+                    text: "[size=50]{}[/size]\n[size=45]{}[/size]".format(root.noun3_obj.principal_parts, root.noun3_obj.split_entry[-1])
+                    valign: "middle"
+            BoxLayout:
+                orientation: 'horizontal'
+                NounLabel:
+                    font_size: 50
+                    text: root.word1_showing
+                    valign: "top"
+                NounLabel:
+                    font_size: 50
+                    text: root.word2_showing
+                    valign: "top"
+                NounLabel:
+                    font_size: 50
+                    text: root.word3_showing
+                    valign: "top"
+        Label:
+            text: "Round {}\n{}".format(root.round, root.round_name)
+            font_size: 30
+            pos_hint: {'center_y': 0.95}
+            halign: "center"

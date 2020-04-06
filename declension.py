@@ -8,18 +8,21 @@ from random import shuffle
 
 
 def shuffle_list(noun_obj):
-    noun_list = noun_obj.declined_list
+    noun_list = noun_obj.declined_list[:]
     shuffle(noun_list)
     return noun_list
 
 def make_parsing_round_set(noun_obj):
+    list_to_shuffle = []
     poppable_set = set()
-    for declined_list in noun_obj.declined_list:
-        poppable_set.add(declined_list[2])
-    shuffle(poppable_set)
+    for declined_list in noun_obj.declined_list[:]:
+        list_to_shuffle.append(declined_list[2])
+    shuffle(list_to_shuffle)
+    for e in list_to_shuffle:
+        poppable_set.add(e)
     return poppable_set
 
-def parsing_all_possibilities(noun_selected_parsing, noun_obj):
+def find_all_matches(noun_selected_parsing, noun_obj):
     matches = []
     for t in noun_obj.declined_list:
         if t[2] == noun_selected_parsing:
@@ -68,28 +71,14 @@ class DeclensionGame(BoxLayout, FloatLayout):
     noun2_selected_parsing = noun2_set.pop()
     noun3_selected_parsing = noun3_set.pop()
 
-    noun1_possibs = parsing_all_possibilities(noun1_selected_parsing, noun1_obj)
-    noun2_possibs = parsing_all_possibilities(noun2_selected_parsing, noun2_obj)
-    noun3_possibs = parsing_all_possibilities(noun2_selected_parsing, noun3_obj)
-
-    def get_new_word(self, shuffled_list, noun_selected, noun_obj):
-        if len(shuffled_list) > 0:
-            noun_selected = shuffled_list.pop()
-        else:
-            shuffled_list = shuffled_list(noun_obj)
-            noun_selected = shuffled_list.pop()
-
-    def get_new_word_parsing(self, noun_set, noun_selected_parsing,
-                             noun_obj, noun_possibs):
-        if len(noun_set) == 0:
-            noun_set = make_parsing_round_set(noun_obj)
-        noun_selected_parsing = noun_set.pop()
-        noun_possibs = parsing_all_possibilities(noun_selected_parsing, noun_obj)
+    noun1_possibs = find_all_matches(noun1_selected_parsing, noun1_obj)
+    noun2_possibs = find_all_matches(noun2_selected_parsing, noun2_obj)
+    noun3_possibs = find_all_matches(noun3_selected_parsing, noun3_obj)
 
     def display_possibles(self, noun_possibs):
         possibilities = []
         for p in noun_possibs:
-            possibilities.append("{}\n".format(p))
+            possibilities.append("{} {}\n".format(p[0], p[1]))
         return "".join(possibilities)
 
     def change_round(self):
@@ -112,35 +101,35 @@ class DeclensionGame(BoxLayout, FloatLayout):
         self.show_words()
 
     def change_game_state(self):
-        if self.game_state > 3:
+        if self.game_state > 5:
             self.game_state = 1
             # get new word (Rounds 1 & 3)
             if self.round != 2:
-                self.get_new_word(self.noun1_shuffled,
-                                  self.noun1_selected,
-                                  self.noun1_obj)
-                self.get_new_word(self.noun2_shuffled,
-                                  self.noun2_selected,
-                                  self.noun2_obj)
-                self.get_new_word(self.noun3_shuffled,
-                                  self.noun3_selected,
-                                  self.noun3_obj)
+                if len(self.noun1_shuffled) == 0:
+                    self.noun1_shuffled = shuffle_list(self.noun1_obj)
+                if len(self.noun2_shuffled) == 0:
+                    self.noun2_shuffled = shuffle_list(self.noun2_obj)
+                if len(self.noun3_shuffled) == 0:
+                    self.noun3_shuffled = shuffle_list(self.noun3_obj)
+                self.noun1_selected = self.noun1_shuffled.pop()
+                self.noun2_selected = self.noun2_shuffled.pop()
+                self.noun3_selected = self.noun3_shuffled.pop()
+
             # get new word (Round 2)
             else:
-                self.get_new_word_parsing(self.noun1_set,
-                                          self.noun1_selected_parsing,
-                                          self.noun1_obj,
-                                          self.noun1_possibs)
-                self.get_new_word_parsing(self.noun2_set,
-                                          self.noun2_selected_parsing,
-                                          self.noun2_obj,
-                                          self.noun2_possibs)
-                self.get_new_word_parsing(self.noun3_set,
-                                          self.noun3_selected_parsing,
-                                          self.noun3_obj,
-                                          self.noun3_possibs)
-
-        else:
+                if len(self.noun1_set) == 0:
+                    self.noun1_set = make_parsing_round_set(self.noun1_obj)
+                if len(self.noun2_set) == 0:
+                    self.noun2_set = make_parsing_round_set(self.noun2_obj)
+                if len(self.noun3_set) == 0:
+                    self.noun3_set = make_parsing_round_set(self.noun3_obj)
+                self.noun1_selected_parsing = self.noun1_set.pop()
+                self.noun2_selected_parsing = self.noun2_set.pop()
+                self.noun3_selected_parsing = self.noun3_set.pop()
+                self.noun1_possibs = find_all_matches(self.noun1_selected_parsing, self.noun1_obj)
+                self.noun2_possibs = find_all_matches(self.noun2_selected_parsing, self.noun2_obj)
+                self.noun3_possibs = find_all_matches(self.noun3_selected_parsing, self.noun3_obj)
+        else:  # advance game state
             self.game_state += 1
         self.show_words()
 
@@ -153,7 +142,7 @@ class DeclensionGame(BoxLayout, FloatLayout):
             self.stem3 = f"{self.noun3_selected[0]} {self.noun3_selected[1]}"
             self.answer1 = self.noun1_selected[2]
             self.answer2 = self.noun2_selected[2]
-            self.answer2 = self.noun2_selected[2]
+            self.answer3 = self.noun3_selected[2]
 
         # Round 2: Parsing
         elif self.round == 2:
@@ -166,21 +155,21 @@ class DeclensionGame(BoxLayout, FloatLayout):
 
         # Round 3: Translation
         else:  # self.round == 3:
-            self.stem1 = f"{self.noun1_selected[2]}, " \
+            self.stem1 = f"[size=70]{self.noun1_selected[2]}[/size], " \
                          f"\n[size=50]{self.noun1_selected[0]} " \
-                         f"{self.noun1_selected[1]}[/size]"
-            self.stem2 = f"{self.noun2_selected[2]}, " \
+                         f"{self.noun1_selected[1]}[/size]\n"
+            self.stem2 = f"[size=70]{self.noun2_selected[2]}[/size], " \
                          f"\n[size=50]{self.noun2_selected[0]} " \
-                         f"{self.noun2_selected[1]}[/size]"
-            self.stem3 =  = f"{self.noun3_selected[2]}, " \
+                         f"{self.noun2_selected[1]}[/size]\n"
+            self.stem3 = f"[size=70]{self.noun3_selected[2]}[/size], " \
                          f"\n[size=50]{self.noun3_selected[0]} " \
-                         f"{self.noun3_selected[1]}[/size]"
+                         f"{self.noun3_selected[1]}[/size]\n"
             self.answer1 = self.noun1_selected[-1]
             self.answer2 = self.noun2_selected[-1]
             self.answer3 = self.noun3_selected[-1]
 
         # SHOW WORDS
-        if self.round != 3:
+        if self.round != 2:
             if self.game_state == 0:
                 self.word1_showing = ""
                 self.word2_showing = ""
@@ -191,59 +180,47 @@ class DeclensionGame(BoxLayout, FloatLayout):
                 self.word2_showing = ""
                 self.word3_showing = ""
             elif self.game_state == 2:
-                self.word1_showing = "{}\n[size=50]{}[/size]".format(self.stem1, self.answer1)
+                self.word1_showing = "{}\n[size=70]{}[/size]".format(self.stem1, self.answer1)
                 self.word2_showing = ""
                 self.word3_showing = ""
             # Show Second Word
             elif self.game_state == 3:
-                self.word1_showing = ""
                 self.word2_showing = self.stem2
                 self.word3_showing = ""
             elif self.game_state == 4:
-                self.word1_showing = ""
-                self.word2_showing = "{}\n[size=50]{}[/size]".format(self.stem2, self.answer2)
+                self.word2_showing = "{}\n[size=70]{}[/size]".format(self.stem2, self.answer2)
                 self.word3_showing = ""
             # Show Third Word
             elif self.game_state == 5:
-                self.word1_showing = ""
-                self.word2_showing = ""
                 self.word3_showing = self.stem3
             elif self.game_state == 6:
-                self.word1_showing = ""
-                self.word2_showing = ""
-                self.word3_showing = "{}\n[size=50]{}[/size]".format(self.stem3, self.answer3)
-        else:  # round 3
+                self.word3_showing = "{}\n[size=70]{}[/size]".format(self.stem3, self.answer3)
+        else:
             if self.game_state == 0:
                 self.word1_showing = ""
                 self.word2_showing = ""
                 self.word3_showing = ""
-            # Show First Word
+                # Show First Word
             elif self.game_state == 1:
-                self.word1_showing = " \n[size=50]{}[/size]".format(self.stem1)
+                self.word1_showing = "[size=70]{}[/size]".format(self.stem1)
                 self.word2_showing = ""
                 self.word3_showing = ""
             elif self.game_state == 2:
-                self.word1_showing = "{}\n[size=50]{}[/size]".format(self.answer1, self.stem1)
+                self.word1_showing = "[size=70]{}[/size]\n{}".format(self.stem1, self.answer1)
                 self.word2_showing = ""
                 self.word3_showing = ""
-            # Show Second Word
+                # Show Second Word
             elif self.game_state == 3:
-                self.word1_showing = ""
-                self.word2_showing = " \n[size=50]{}[/size]".format(self.stem2)
+                self.word2_showing = "[size=70]{}[/size]".format(self.stem2)
                 self.word3_showing = ""
             elif self.game_state == 4:
-                self.word1_showing = ""
-                self.word2_showing = "{}\n[size=50]{}[/size]".format(self.answer2, self.stem2)
+                self.word2_showing = "[size=70]{}[/size]\n{}".format(self.stem2, self.answer2)
                 self.word3_showing = ""
-            # Show Third Word
+                # Show Third Word
             elif self.game_state == 5:
-                self.word1_showing = ""
-                self.word2_showing = ""
-                self.word3_showing = " \n[size=50]{}[/size]".format(self.stem3)
+                self.word3_showing = "[size=70]{}[/size]".format(self.stem3)
             elif self.game_state == 6:
-                self.word1_showing = ""
-                self.word2_showing = ""
-                self.word3_showing = "{}\n[size=50]{}[/size]".format(self.answer3, self.stem3)
+                self.word3_showing = "[size=70]{}[/size]\n{}".format(self.stem3, self.answer3)
 
 
 class DeclensionApp(App):
